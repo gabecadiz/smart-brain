@@ -2,6 +2,7 @@ import React from 'react';
 import './FaceRecognition.css';
 
 const FaceRecognition = ({ imageUrl, box }) => {
+  
   return (
     <div className='center ma'>
       <div className='absolute mt2'>
@@ -12,7 +13,13 @@ const FaceRecognition = ({ imageUrl, box }) => {
           width='500px'
           height='auto'
         />
-        <div className='bounding-box' style={{top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol}}/>
+        {box.length >= 1 &&
+          <p> 🧠 Smart Brain has detected {box.length} faces in your image </p>
+        }
+        {box.length >= 1 && box.map((outline, index) => (
+          <div className='bounding-box' key={index} style={{top: outline.topRow, right: outline.rightCol, bottom: outline.bottomRow, left: outline.leftCol}}/> 
+        ))}
+
       </div>
     </div>
   );
