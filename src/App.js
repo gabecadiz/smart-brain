@@ -18,7 +18,7 @@ const app = new Clarifai.App({
 const initialState = {
   input: '',
   imageUrl: '',
-  box: {},
+  box: [],
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -47,18 +47,24 @@ class App extends Component {
       }
     });
   };
+  //returns an array of face boundary locations from input image
   calculateFaceLocation = data => {
-    const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputimage');
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - clarifaiFace.right_col * width,
-      bottomRow: height - clarifaiFace.bottom_row * height
-    };
+    let clarifaiArray = data.outputs[0].data.regions.map(region => {
+      let boundaries = region.region_info.bounding_box;
+      const image = document.getElementById('inputimage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+
+      return {
+        leftCol: boundaries.left_col * width,
+        topRow: boundaries.top_row * height,
+        rightCol: width - boundaries.right_col * width,
+        bottomRow: height - (boundaries.bottom_row * height) + 50
+      };
+    });
+
+    return clarifaiArray
+   
   };
   displayFaceBox = box => {
     this.setState({ box: box });
@@ -89,6 +95,7 @@ class App extends Component {
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
       .catch(err => console.log(err));
+      
   };
 
   onRouteChange = route => {
