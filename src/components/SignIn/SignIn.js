@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { onEmailChange } from '../../actions/actions';
 
+const mapStateToProps = state => {
+  return {
+    email: state.email
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onEmailChange: event => dispatch(onEmailChange(event.target.value))
+  };
+};
 class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signInEmail: '',
       signInPassword: ''
     };
   }
 
-  onEmailChange = event => {
-    this.setState({ signInEmail: event.target.value });
-  };
+  // onEmailChange = event => {
+  //   this.setState({ signInEmail: event.target.value });
+  // };
   onPasswordChange = event => {
     this.setState({ signInPassword: event.target.value });
   };
@@ -21,7 +33,7 @@ class SignIn extends Component {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: this.state.signInEmail,
+        email: this.props.email,
         password: this.state.signInPassword
       })
     })
@@ -34,7 +46,7 @@ class SignIn extends Component {
       });
   };
   render() {
-    const { onRouteChange } = this.props;
+    const { onRouteChange, onEmailChange } = this.props;
     return (
       <article className='br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center'>
         <main className='pa4 black-80'>
@@ -46,7 +58,7 @@ class SignIn extends Component {
                   Email
                 </label>
                 <input
-                  onChange={this.onEmailChange}
+                  onChange={onEmailChange}
                   className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100'
                   type='email'
                   name='email-address'
@@ -89,4 +101,7 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignIn);
