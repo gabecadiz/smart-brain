@@ -18,8 +18,6 @@ export const onPasswordChange = password => ({
 
 export const requestLogin = (email, password) => dispatch => {
   dispatch({ type: REQUEST_LOGIN_PENDING });
-  console.log('inside req login', email);
-  console.log('inside req login', password);
   fetch('http://localhost:3003/signin', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
