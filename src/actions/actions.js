@@ -1,5 +1,6 @@
 import {
   CHANGE_EMAIL_FIELD,
+  CHANGE_PASSWORD_FIELD,
   REQUEST_LOGIN_PENDING,
   REQUEST_LOGIN_SUCCESS,
   REQUEST_LOGIN_FAILED
@@ -8,6 +9,11 @@ import {
 export const onEmailChange = email => ({
   type: CHANGE_EMAIL_FIELD,
   payload: email
+});
+
+export const onPasswordChange = password => ({
+  type: CHANGE_PASSWORD_FIELD,
+  payload: password
 });
 
 export const requestLogin = (email, password) => dispatch => {

@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onEmailChange, requestLogin } from '../../actions/actions';
+import {
+  onEmailChange,
+  onPasswordChange,
+  requestLogin
+} from '../../actions/actions';
 
 const mapStateToProps = state => {
   return {
     email: state.setLoginField.email,
+    password: state.setLoginField.password,
     user: state.requestLogin.user,
     isPending: state.requestLogin.isPending,
     error: state.requestLogin.error
@@ -14,23 +19,17 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onEmailChange: event => dispatch(onEmailChange(event.target.value)),
+    onPasswordChange: event => dispatch(onPasswordChange(event.target.value)),
     onRequestLogin: (email, password) => dispatch(requestLogin(email, password))
   };
 };
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signInPassword: ''
-    };
-  }
-
   // onEmailChange = event => {
   //   this.setState({ signInEmail: event.target.value });
   // };
-  onPasswordChange = event => {
-    this.setState({ signInPassword: event.target.value });
-  };
+  // onPasswordChange = event => {
+  //   this.setState({ signInPassword: event.target.value });
+  // };
 
   // onSignInSubmit = () => {
   //   fetch('http://localhost:3003/signin', {
@@ -50,7 +49,12 @@ class SignIn extends Component {
   //     });
   // };
   render() {
-    const { onRouteChange, onEmailChange, onRequestLogin } = this.props;
+    const {
+      onRouteChange,
+      onEmailChange,
+      onPasswordChange,
+      onRequestLogin
+    } = this.props;
     return (
       <article className='br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center'>
         <main className='pa4 black-80'>
@@ -74,7 +78,7 @@ class SignIn extends Component {
                   Password
                 </label>
                 <input
-                  onChange={this.onPasswordChange}
+                  onChange={onPasswordChange}
                   className='b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100'
                   type='password'
                   name='password'
@@ -85,7 +89,7 @@ class SignIn extends Component {
             <div className=''>
               <input
                 onClick={() =>
-                  onRequestLogin(this.props.email, this.state.signInPassword)
+                  onRequestLogin(this.props.email, this.props.password)
                 }
                 className='b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib'
                 type='submit'

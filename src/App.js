@@ -30,7 +30,8 @@ const initialState = {
 
 const mapStateToProps = state => {
   return {
-    route: state.requestLogin.route
+    route: state.requestLogin.route,
+    isSignedIn: state.requestLogin.isSignedIn
   };
 };
 
@@ -124,8 +125,8 @@ class App extends Component {
   };
 
   render() {
-    const { isSignedIn, box, imageUrl } = this.state;
-    const { route } = this.props;
+    const { box, imageUrl } = this.state;
+    const { route, isSignedIn } = this.props;
     return (
       <div className='App'>
         <Particles className='particles' params={particleOptions} />
