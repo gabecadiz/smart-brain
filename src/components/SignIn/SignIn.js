@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { onEmailChange } from '../../actions/actions';
+import { onEmailChange, requestLogin } from '../../actions/actions';
 
 const mapStateToProps = state => {
   return {
-    email: state.email
+    email: state.setLoginField.email,
+    user: state.requestLogin.user,
+    isPending: state.requestLogin.isPending,
+    error: state.requestLogin.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onEmailChange: event => dispatch(onEmailChange(event.target.value))
+    onEmailChange: event => dispatch(onEmailChange(event.target.value)),
+    onRequestLogin: (email, password) => dispatch(requestLogin(email, password))
   };
 };
 class SignIn extends Component {
@@ -28,25 +32,25 @@ class SignIn extends Component {
     this.setState({ signInPassword: event.target.value });
   };
 
-  onSignInSubmit = () => {
-    fetch('http://localhost:3003/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: this.props.email,
-        password: this.state.signInPassword
-      })
-    })
-      .then(res => res.json())
-      .then(user => {
-        if (user.id) {
-          this.props.loadUser(user);
-          this.props.onRouteChange('home');
-        }
-      });
-  };
+  // onSignInSubmit = () => {
+  //   fetch('http://localhost:3003/signin', {
+  //     method: 'post',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       email: this.props.email,
+  //       password: this.state.signInPassword
+  //     })
+  //   })
+  //     .then(res => res.json())
+  //     .then(user => {
+  //       if (user.id) {
+  //         this.props.loadUser(user);
+  //         this.props.onRouteChange('home');
+  //       }
+  //     });
+  // };
   render() {
-    const { onRouteChange, onEmailChange } = this.props;
+    const { onRouteChange, onEmailChange, onRequestLogin } = this.props;
     return (
       <article className='br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center'>
         <main className='pa4 black-80'>
@@ -80,7 +84,9 @@ class SignIn extends Component {
             </fieldset>
             <div className=''>
               <input
-                onClick={() => this.onSignInSubmit()}
+                onClick={() =>
+                  onRequestLogin(this.props.email, this.state.signInPassword)
+                }
                 className='b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib'
                 type='submit'
                 value='Sign in'

@@ -1,14 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider, connect } from 'react-redux';
-import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { setLoginField } from './reducers/reducers';
+import { setLoginField, requestLogin } from './reducers/reducers';
 import 'tachyons';
 
-const store = createStore(setLoginField);
+const logger = createLogger();
+const rootReducer = combineReducers({ setLoginField, requestLogin });
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunkMiddleware, logger)
+);
 
 ReactDOM.render(
   <Provider store={store}>

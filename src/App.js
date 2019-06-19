@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import { connect } from 'react-redux';
+import { onEmailChange, requestLogin } from './actions/actions';
+
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -23,6 +26,19 @@ const initialState = {
     entries: 0,
     joined: ''
   }
+};
+
+const mapStateToProps = state => {
+  return {
+    route: state.requestLogin.route
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onEmailChange: event => dispatch(onEmailChange(event.target.value)),
+    onRequestLogin: (email, password) => dispatch(requestLogin(email, password))
+  };
 };
 
 class App extends Component {
@@ -108,7 +124,8 @@ class App extends Component {
   };
 
   render() {
-    const { isSignedIn, box, imageUrl, route } = this.state;
+    const { isSignedIn, box, imageUrl } = this.state;
+    const { route } = this.props;
     return (
       <div className='App'>
         <Particles className='particles' params={particleOptions} />
@@ -142,4 +159,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
