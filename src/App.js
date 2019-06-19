@@ -6,14 +6,9 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
 import particleOptions from './particleOptions';
-import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
-
-const app = new Clarifai.App({
-  apiKey: '435e8439ba8e4e648fd5eaa950be0217'
-});
 
 const initialState = {
   input: '',
@@ -59,12 +54,11 @@ class App extends Component {
         leftCol: boundaries.left_col * width,
         topRow: boundaries.top_row * height,
         rightCol: width - boundaries.right_col * width,
-        bottomRow: height - (boundaries.bottom_row * height) + 50
+        bottomRow: height - boundaries.bottom_row * height + 50
       };
     });
 
-    return clarifaiArray
-   
+    return clarifaiArray;
   };
   displayFaceBox = box => {
     this.setState({ box: box });
@@ -76,8 +70,14 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    fetch('http://localhost:3003/imagesurl', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .then(response => response.json())
       .then(response => {
         if (response) {
           fetch('http://localhost:3003/images', {
@@ -90,12 +90,12 @@ class App extends Component {
             .then(response => response.json())
             .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }));
-            });
+            })
+            .catch(console.log);
         }
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
       .catch(err => console.log(err));
-      
   };
 
   onRouteChange = route => {
