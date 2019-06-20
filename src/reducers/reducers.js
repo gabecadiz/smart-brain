@@ -3,7 +3,9 @@ import {
   CHANGE_PASSWORD_FIELD,
   REQUEST_LOGIN_PENDING,
   REQUEST_LOGIN_SUCCESS,
-  REQUEST_LOGIN_FAILED
+  REQUEST_LOGIN_FAILED,
+  ROUTE_CHANGE_SIGN_IN,
+  ROUTE_CHANGE_REGISTER
 } from '../constants/constants';
 
 const initialStateForm = {
@@ -52,6 +54,10 @@ export const requestLogin = (state = initialStateUser, action = {}) => {
         error: action.payload,
         isPending: false
       });
+    case ROUTE_CHANGE_SIGN_IN:
+      return Object.assign({}, state, { ...initialStateUser });
+    case ROUTE_CHANGE_REGISTER:
+      return Object.assign({}, state, { route: action.payload });
     default:
       return state;
   }

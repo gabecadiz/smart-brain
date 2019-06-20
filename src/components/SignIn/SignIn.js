@@ -24,30 +24,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 class SignIn extends Component {
-  // onEmailChange = event => {
-  //   this.setState({ signInEmail: event.target.value });
-  // };
-  // onPasswordChange = event => {
-  //   this.setState({ signInPassword: event.target.value });
-  // };
-
-  // onSignInSubmit = () => {
-  //   fetch('http://localhost:3003/signin', {
-  //     method: 'post',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       email: this.props.email,
-  //       password: this.state.signInPassword
-  //     })
-  //   })
-  //     .then(res => res.json())
-  //     .then(user => {
-  //       if (user.id) {
-  //         this.props.loadUser(user);
-  //         this.props.onRouteChange('home');
-  //       }
-  //     });
-  // };
   render() {
     const {
       onRouteChange,

@@ -11,7 +11,10 @@ import { setLoginField, requestLogin } from './reducers/reducers';
 import 'tachyons';
 
 const logger = createLogger();
-const rootReducer = combineReducers({ setLoginField, requestLogin });
+const rootReducer = combineReducers({
+  setLoginField,
+  requestLogin
+});
 const store = createStore(
   rootReducer,
   applyMiddleware(thunkMiddleware, logger)

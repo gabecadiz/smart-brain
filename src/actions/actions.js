@@ -3,7 +3,9 @@ import {
   CHANGE_PASSWORD_FIELD,
   REQUEST_LOGIN_PENDING,
   REQUEST_LOGIN_SUCCESS,
-  REQUEST_LOGIN_FAILED
+  REQUEST_LOGIN_FAILED,
+  ROUTE_CHANGE_SIGN_IN,
+  ROUTE_CHANGE_REGISTER
 } from '../constants/constants';
 
 export const onEmailChange = email => ({
@@ -36,11 +38,14 @@ export const requestLogin = (email, password) => dispatch => {
     })
     .then(user => dispatch({ type: REQUEST_LOGIN_SUCCESS, payload: user }))
     .catch(error => dispatch({ type: REQUEST_LOGIN_FAILED, payload: error }));
-
-  // .then(user => {
-  //   if (user.id) {
-  //     this.props.loadUser(user);
-  //     this.props.onRouteChange('home');
-  //   }
-  // });
 };
+
+export const routeToSignIn = route => ({
+  type: ROUTE_CHANGE_SIGN_IN,
+  payload: route
+});
+
+export const routeToRegister = route => ({
+  type: ROUTE_CHANGE_REGISTER,
+  payload: route
+});
