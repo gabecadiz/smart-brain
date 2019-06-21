@@ -9,7 +9,12 @@ import {
   REQUEST_REGISTER_SUCCESS,
   REQUEST_REGISTER_FAILED,
   ROUTE_CHANGE_REGISTER,
-  CHANGE_URL_FIELD
+  CHANGE_URL_FIELD,
+  REQUEST_CLARIFAI_PENDING,
+  REQUEST_CLARIFAI_SUCCESS,
+  REQUEST_CLARIFAI_FAILED,
+  REQUEST_COUNT_SUCCESS,
+  REQUEST_COUNT_FAILED
 } from '../constants/constants';
 
 const initialStateForm = {
@@ -74,6 +79,16 @@ export const requestLogin = (state = initialStateUser, action = {}) => {
         error: action.payload,
         isPending: false
       });
+    case REQUEST_COUNT_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          entries: action.payload
+        }
+      };
+    case REQUEST_COUNT_FAILED:
+      return Object.assign({}, state, { error: action.payload });
     // signout/change route to sign in handled on index.js root reducer
     // case ROUTE_CHANGE_SIGN_IN:
     //   return Object.assign({}, state, { ...initialStateUser });
@@ -84,12 +99,30 @@ export const requestLogin = (state = initialStateUser, action = {}) => {
   }
 };
 
-const initialStateAPI = {};
+const initialStateAPI = {
+  imageUrl: '',
+  displayImage: false,
+  box: [],
+  clarifaiPending: false,
+  clarifaiError: ''
+};
 
 export const requestAPI = (state = initialStateAPI, action = {}) => {
   switch (action.type) {
     case CHANGE_URL_FIELD:
-      return Object.assign({}, state, { imageUrl: action.payload });
+      return Object.assign({}, state, { imageUrl: action.payload, box: [] });
+    case REQUEST_CLARIFAI_PENDING:
+      return Object.assign({}, state, {
+        clarifaiPending: true,
+        displayImage: true,
+        box: []
+      });
+    case REQUEST_CLARIFAI_SUCCESS:
+      return Object.assign({}, state, {
+        box: action.payload
+      });
+    case REQUEST_CLARIFAI_FAILED:
+      return Object.assign({}, state, { clarifaiError: action.payload });
     default:
       return state;
   }

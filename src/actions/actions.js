@@ -10,7 +10,12 @@ import {
   REQUEST_REGISTER_FAILED,
   ROUTE_CHANGE_SIGN_IN,
   ROUTE_CHANGE_REGISTER,
-  CHANGE_URL_FIELD
+  CHANGE_URL_FIELD,
+  REQUEST_CLARIFAI_PENDING,
+  REQUEST_CLARIFAI_SUCCESS,
+  REQUEST_CLARIFAI_FAILED,
+  REQUEST_COUNT_SUCCESS,
+  REQUEST_COUNT_FAILED
 } from '../constants/constants';
 
 export const onEmailChange = email => ({
@@ -85,24 +90,86 @@ export const onRequestRegister = (name, email, password) => dispatch => {
     );
 };
 
-// onSignInSubmit = () => {
-//   fetch('http://localhost:3003/register', {
+export const onRequestClarifai = (imageUrl, id) => dispatch => {
+  dispatch({ type: REQUEST_CLARIFAI_PENDING });
+  fetch('http://localhost:3003/imagesurl', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      input: imageUrl
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      //returns an array of face boundary locations from input image
+
+      let clarifaiArray = data.outputs[0].data.regions.map(region => {
+        let boundaries = region.region_info.bounding_box;
+        const image = document.getElementById('inputimage');
+        const width = Number(image.width);
+        const height = Number(image.height);
+
+        return {
+          leftCol: boundaries.left_col * width,
+          topRow: boundaries.top_row * height,
+          rightCol: width - boundaries.right_col * width,
+          bottomRow: height - boundaries.bottom_row * height + 50
+        };
+      });
+      dispatch({ type: REQUEST_CLARIFAI_SUCCESS, payload: clarifaiArray });
+    })
+    .catch(error => dispatch({ type: REQUEST_CLARIFAI_FAILED, payload: error }))
+    .then(res => {
+      if (res) {
+        fetch('http://localhost:3003/images', {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: id
+          })
+        })
+          .then(res => res.json())
+          .then(count =>
+            dispatch({ type: REQUEST_COUNT_SUCCESS, payload: count })
+          )
+          .catch(error =>
+            dispatch({ type: REQUEST_COUNT_FAILED, payload: error })
+          );
+      }
+    });
+};
+
+//   onButtonSubmit = () => {
+//   this.setState({ imageUrl: this.state.input });
+//   fetch('http://localhost:3003/imagesurl', {
 //     method: 'post',
 //     headers: { 'Content-Type': 'application/json' },
 //     body: JSON.stringify({
-//       email: this.state.email,
-//       password: this.state.password,
-//       name: this.state.name
+//       input: this.state.input
 //     })
 //   })
-//     .then(res => res.json())
-//     .then(user => {
-//       if (user.id) {
-//         this.props.loadUser(user);
-//         this.props.onRouteChange('home');
+//     .then(response => response.json())
+//     .then(response => {
+//       if (response) {
+//         fetch('http://localhost:3003/images', {
+//           method: 'put',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({
+//             id: this.state.user.id
+//           })
+//         })
+//           .then(response => response.json())
+//           .then(count => {
+//             this.setState(Object.assign(this.state.user, { entries: count }));
+//           })
+//           .catch(console.log);
 //       }
-//     });
-export const onImageLinkChange = url => ({
+//       this.displayFaceBox(this.calculateFaceLocation(response));
+//     })
+//     .catch(err => console.log(err));
+// };
+
+export const onImageUrlChange = url => ({
   type: CHANGE_URL_FIELD,
   payload: url
 });

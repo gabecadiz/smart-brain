@@ -7,13 +7,14 @@ import thunkMiddleware from 'redux-thunk';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { setLoginField, requestLogin } from './reducers/reducers';
+import { setLoginField, requestLogin, requestAPI } from './reducers/reducers';
 import 'tachyons';
 
 const logger = createLogger();
 const appReducer = combineReducers({
   setLoginField,
-  requestLogin
+  requestLogin,
+  requestAPI
 });
 //root reducer setup to completely reset store state at logout/route changing to sign in component
 const rootReducer = (state, action) => {
