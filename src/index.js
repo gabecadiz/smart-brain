@@ -11,10 +11,17 @@ import { setLoginField, requestLogin } from './reducers/reducers';
 import 'tachyons';
 
 const logger = createLogger();
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   setLoginField,
   requestLogin
 });
+//root reducer setup to completely reset store state at logout/route changing to sign in component
+const rootReducer = (state, action) => {
+  if (action.type === 'ROUTE_CHANGE_SIGN_IN') {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
 const store = createStore(
   rootReducer,
   applyMiddleware(thunkMiddleware, logger)

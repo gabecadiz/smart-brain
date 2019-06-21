@@ -5,7 +5,8 @@ import {
   REQUEST_LOGIN_SUCCESS,
   REQUEST_LOGIN_FAILED,
   ROUTE_CHANGE_SIGN_IN,
-  ROUTE_CHANGE_REGISTER
+  ROUTE_CHANGE_REGISTER,
+  CHANGE_URL_FIELD
 } from '../constants/constants';
 
 const initialStateForm = {
@@ -54,10 +55,21 @@ export const requestLogin = (state = initialStateUser, action = {}) => {
         error: action.payload,
         isPending: false
       });
-    case ROUTE_CHANGE_SIGN_IN:
-      return Object.assign({}, state, { ...initialStateUser });
+    // case ROUTE_CHANGE_SIGN_IN:
+    //   return Object.assign({}, state, { ...initialStateUser });
     case ROUTE_CHANGE_REGISTER:
       return Object.assign({}, state, { route: action.payload });
+    default:
+      return state;
+  }
+};
+
+const initialStateAPI = {};
+
+export const requestAPI = (state = initialStateAPI, action = {}) => {
+  switch (action.type) {
+    case CHANGE_URL_FIELD:
+      return Object.assign({}, state, { imageUrl: action.payload });
     default:
       return state;
   }

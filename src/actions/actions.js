@@ -5,7 +5,8 @@ import {
   REQUEST_LOGIN_SUCCESS,
   REQUEST_LOGIN_FAILED,
   ROUTE_CHANGE_SIGN_IN,
-  ROUTE_CHANGE_REGISTER
+  ROUTE_CHANGE_REGISTER,
+  CHANGE_URL_FIELD
 } from '../constants/constants';
 
 export const onEmailChange = email => ({
@@ -48,4 +49,9 @@ export const routeToSignIn = route => ({
 export const routeToRegister = route => ({
   type: ROUTE_CHANGE_REGISTER,
   payload: route
+});
+
+export const onImageLinkChange = url => ({
+  type: CHANGE_URL_FIELD,
+  payload: url
 });
