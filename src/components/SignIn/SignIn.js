@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
   onEmailChange,
   onPasswordChange,
-  requestLogin
+  requestLogin,
+  routeToRegister
 } from '../../actions/actions';
 
 const mapStateToProps = state => {
@@ -12,7 +13,8 @@ const mapStateToProps = state => {
     password: state.setLoginField.password,
     user: state.requestLogin.user,
     isPending: state.requestLogin.isPending,
-    error: state.requestLogin.error
+    error: state.requestLogin.error,
+    route: state.requestLogin.route
   };
 };
 
@@ -20,13 +22,15 @@ const mapDispatchToProps = dispatch => {
   return {
     onEmailChange: event => dispatch(onEmailChange(event.target.value)),
     onPasswordChange: event => dispatch(onPasswordChange(event.target.value)),
-    onRequestLogin: (email, password) => dispatch(requestLogin(email, password))
+    onRequestLogin: (email, password) =>
+      dispatch(requestLogin(email, password)),
+    routeToRegister: route => dispatch(routeToRegister(route))
   };
 };
 class SignIn extends Component {
   render() {
     const {
-      onRouteChange,
+      routeToRegister,
       onEmailChange,
       onPasswordChange,
       onRequestLogin
@@ -74,7 +78,7 @@ class SignIn extends Component {
             </div>
             <div className='lh-copy mt3'>
               <p
-                onClick={() => onRouteChange('register')}
+                onClick={() => routeToRegister('register')}
                 className='f6 link dim black db pointer'
               >
                 Register
