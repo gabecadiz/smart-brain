@@ -1,40 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+  onEmailChange,
+  onPasswordChange,
+  requestLogin,
+  routeToRegister
+} from '../../actions/actions';
 
+const mapStateToProps = state => {
+  return {
+    email: state.setLoginField.email,
+    password: state.setLoginField.password,
+    user: state.requestLogin.user,
+    isPending: state.requestLogin.isPending,
+    error: state.requestLogin.error,
+    route: state.requestLogin.route
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onEmailChange: event => dispatch(onEmailChange(event.target.value)),
+    onPasswordChange: event => dispatch(onPasswordChange(event.target.value)),
+    onRequestLogin: (email, password) =>
+      dispatch(requestLogin(email, password)),
+    routeToRegister: route => dispatch(routeToRegister(route))
+  };
+};
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signInEmail: '',
-      signInPassword: ''
-    };
-  }
-
-  onEmailChange = event => {
-    this.setState({ signInEmail: event.target.value });
-  };
-  onPasswordChange = event => {
-    this.setState({ signInPassword: event.target.value });
-  };
-
-  onSignInSubmit = () => {
-    fetch('http://localhost:3003/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: this.state.signInEmail,
-        password: this.state.signInPassword
-      })
-    })
-      .then(res => res.json())
-      .then(user => {
-        if (user.id) {
-          this.props.loadUser(user);
-          this.props.onRouteChange('home');
-        }
-      });
-  };
   render() {
-    const { onRouteChange } = this.props;
+    const {
+      routeToRegister,
+      onEmailChange,
+      onPasswordChange,
+      onRequestLogin
+    } = this.props;
     return (
       <article className='br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center'>
         <main className='pa4 black-80'>
@@ -46,7 +46,7 @@ class SignIn extends Component {
                   Email
                 </label>
                 <input
-                  onChange={this.onEmailChange}
+                  onChange={onEmailChange}
                   className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100'
                   type='email'
                   name='email-address'
@@ -58,7 +58,7 @@ class SignIn extends Component {
                   Password
                 </label>
                 <input
-                  onChange={this.onPasswordChange}
+                  onChange={onPasswordChange}
                   className='b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100'
                   type='password'
                   name='password'
@@ -68,7 +68,9 @@ class SignIn extends Component {
             </fieldset>
             <div className=''>
               <input
-                onClick={() => this.onSignInSubmit()}
+                onClick={() =>
+                  onRequestLogin(this.props.email, this.props.password)
+                }
                 className='b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib'
                 type='submit'
                 value='Sign in'
@@ -76,7 +78,7 @@ class SignIn extends Component {
             </div>
             <div className='lh-copy mt3'>
               <p
-                onClick={() => onRouteChange('register')}
+                onClick={() => routeToRegister('register')}
                 className='f6 link dim black db pointer'
               >
                 Register
@@ -89,4 +91,7 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignIn);
