@@ -35,7 +35,7 @@ export const onNameChange = name => ({
 
 export const requestLogin = (email, password) => dispatch => {
   dispatch({ type: REQUEST_LOGIN_PENDING });
-  fetch('http://localhost:3003/signin', {
+  fetch('https://pure-tundra-20739.herokuapp.com/signin', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -67,7 +67,7 @@ export const routeToRegister = route => ({
 
 export const onRequestRegister = (name, email, password) => dispatch => {
   dispatch({ type: REQUEST_REGISTER_PENDING });
-  fetch('http://localhost:3003/register', {
+  fetch('https://pure-tundra-20739.herokuapp.com/register', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -92,7 +92,7 @@ export const onRequestRegister = (name, email, password) => dispatch => {
 
 export const onRequestClarifai = (imageUrl, id) => dispatch => {
   dispatch({ type: REQUEST_CLARIFAI_PENDING });
-  fetch('http://localhost:3003/imagesurl', {
+  fetch('https://pure-tundra-20739.herokuapp.com/imagesurl', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -118,56 +118,26 @@ export const onRequestClarifai = (imageUrl, id) => dispatch => {
       });
       dispatch({ type: REQUEST_CLARIFAI_SUCCESS, payload: clarifaiArray });
     })
-    .catch(error => dispatch({ type: REQUEST_CLARIFAI_FAILED, payload: error }))
-    .then(res => {
-      if (res) {
-        fetch('http://localhost:3003/images', {
-          method: 'put',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: id
-          })
+    .then(() => {
+      fetch('https://pure-tundra-20739.herokuapp.com/images', {
+        method: 'put',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: id
         })
-          .then(res => res.json())
-          .then(count =>
-            dispatch({ type: REQUEST_COUNT_SUCCESS, payload: count })
-          )
-          .catch(error =>
-            dispatch({ type: REQUEST_COUNT_FAILED, payload: error })
-          );
-      }
-    });
+      })
+        .then(res => res.json())
+        .then(count =>
+          dispatch({ type: REQUEST_COUNT_SUCCESS, payload: count })
+        )
+        .catch(error =>
+          dispatch({ type: REQUEST_COUNT_FAILED, payload: error })
+        );
+    })
+    .catch(error =>
+      dispatch({ type: REQUEST_CLARIFAI_FAILED, payload: error })
+    );
 };
-
-//   onButtonSubmit = () => {
-//   this.setState({ imageUrl: this.state.input });
-//   fetch('http://localhost:3003/imagesurl', {
-//     method: 'post',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({
-//       input: this.state.input
-//     })
-//   })
-//     .then(response => response.json())
-//     .then(response => {
-//       if (response) {
-//         fetch('http://localhost:3003/images', {
-//           method: 'put',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify({
-//             id: this.state.user.id
-//           })
-//         })
-//           .then(response => response.json())
-//           .then(count => {
-//             this.setState(Object.assign(this.state.user, { entries: count }));
-//           })
-//           .catch(console.log);
-//       }
-//       this.displayFaceBox(this.calculateFaceLocation(response));
-//     })
-//     .catch(err => console.log(err));
-// };
 
 export const onImageUrlChange = url => ({
   type: CHANGE_URL_FIELD,
