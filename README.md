@@ -1,68 +1,30 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Smart Brain Summary
 
-## Available Scripts
+Smart Brain is a React.js based front-end that is combined with a Node/Express API [backend](https://github.com/gabecadiz/smart-brain-api)
 
-In the project directory, you can run:
+Smart brain is a single page application app that allows users to submit a link to a photo. If a correct image link is inputted and submitted, the app will display the image and shortly update to provide boxes around any faces detected by the Clarifai face detection model.
 
-### `npm start`
+## Register / Sign In Capabilities
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Smart Brain Register/ SignUp](/assets/smart-brain-login-reg.gif)
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Face Detection (
 
-### `npm test`
+![Smart Brain Single Face Detection](/assets/smart-brain-single-face.gif)
+![Smart Brain Multiple Face Detection](/assets/smart-brain-multiple-faces.gif)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Setup
 
-### `npm run build`
+Smart Brain is deployed via Heroku and can be found [here](https://smart-brain-gc.herokuapp.com/)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Dependencies
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Clarifai
+- React
+- React-particles-js
+- React-Redux
+- React-tilt
+- Redux
+- Redux-logger
+- Redux-thunk
+- tachyons
