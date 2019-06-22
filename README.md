@@ -31,6 +31,8 @@ Smart Brain is deployed via Heroku and can be found [here](https://smart-brain-g
 
 ### Back End Dependencies
 
+[backend](https://github.com/gabecadiz/smart-brain-api)
+
 - Bcrypt
 - Clarifai
 - Cors
