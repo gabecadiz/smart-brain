@@ -17,7 +17,7 @@ Smart brain is a single page application app that allows users to submit a link 
 
 Smart Brain is deployed via Heroku and can be found [here](https://smart-brain-gc.herokuapp.com/)
 
-### Dependencies
+### Front End Dependencies
 
 - Clarifai
 - React
@@ -28,3 +28,13 @@ Smart Brain is deployed via Heroku and can be found [here](https://smart-brain-g
 - Redux-logger
 - Redux-thunk
 - tachyons
+
+### Back End Dependencies
+
+- Bcrypt
+- Clarifai
+- Cors
+- Express
+- Knex
+- Nodemon
+- Pg
